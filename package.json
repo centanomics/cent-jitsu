@@ -1,0 +1,31 @@
+{
+  "name": "cent-jitsu",
+  "version": "1.0.0",
+  "description": "Think club pengiuns card-jitsu but with coins",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "npm install --only=dev --prefix client && npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/centanomics/cent-jitsu.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/centanomics/cent-jitsu/issues"
+  },
+  "homepage": "https://github.com/centanomics/cent-jitsu#readme",
+  "dependencies": {
+    "debug": "^4.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
+  }
+}
