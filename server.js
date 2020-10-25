@@ -1,7 +1,25 @@
+// debug not working
 const log = require('debug')('server:log');
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+
+//define ports
+const PORT = process.env.PORT || 5000;
 
 const app = express();
+
+const index = require('./routes/index');
+app.use(index);
+
+const server = http.createServer(app);
+const io = socketIo(server);
+
+const getApiAndEmit = socket => {
+  const response = new Date();
+
+  socket.emit("From API", response)
+};
 
 //Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -13,11 +31,5 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-//define ports
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  log(`Server is listening on port ${PORT}`);
-  console.log(`lolServer is listening on port ${PORT}`)
-})
+server.listen(PORT, () => console.log(`I'm listening on port ${PORT}`))
 

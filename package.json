@@ -22,7 +22,8 @@
   "homepage": "https://github.com/centanomics/cent-jitsu#readme",
   "dependencies": {
     "debug": "^4.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
