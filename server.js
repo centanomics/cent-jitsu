@@ -15,25 +15,17 @@ app.use(index);
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const getApiAndEmit = socket => {
-  const response = new Date();
-
-  socket.emit("FromAPI", response)
-};
-
+//game variables
 let interval;
 
 io.on("connection", (socket) => {
-  console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    clearInterval(interval);
-  });
-});
+  console.log(socket.id, " connected")
+
+})
+
+setInterval(() => {
+
+}, 1);
 
 //Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

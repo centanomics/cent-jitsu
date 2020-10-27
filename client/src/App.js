@@ -15,7 +15,7 @@ const App = () => {
       <div className="App">
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path ="/game" component={Game} />
+          <Route path ="/game" component={Game} />
           <Route component={NotFound} />
         </Switch>
       </div>

@@ -9,7 +9,7 @@ const Home = () => {
   }
   const renderRedirect = () => {
     if (redirect) {
-      return <Redirect to={`/game?gameId=${uuid.v4()}`} />
+      return <Redirect to={`/game/${uuid.v4()}`} />
     }
   }
   return (
