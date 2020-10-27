@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-export const NotFound = () => {
+const NotFound = () => {
   return (
     <div>
       <p>Looks like you got lost.</p>
@@ -9,3 +9,5 @@ export const NotFound = () => {
     </div>
   )
 }
+
+export default NotFound

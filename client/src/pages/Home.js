@@ -1,10 +1,24 @@
-import React from 'react'
+import React, {useState} from 'react'
+import uuid from 'uuid';
+import {Redirect} from 'react-router-dom'
 
-export const Home = () => {
+const Home = () => {
+  const [redirect, setRedirect] = useState(false);
+  const onClick = () => {
+    setRedirect(!redirect)
+  }
+  const renderRedirect = () => {
+    if (redirect) {
+      return <Redirect to={`/game?gameId=${uuid.v4()}`} />
+    }
+  }
   return (
     <main>
       <h1>Cent-jitsu</h1>
-      <button>Start!</button>
+      {renderRedirect()}
+      <button onClick={onClick}>Start!</button>
     </main>
   )
 }
+
+export default Home

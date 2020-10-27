@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './styles/App.css';
 
-const Home = require('./pages/Home');
-const Game = require('./pages/Game');
-const NotFound = require('./pages/NotFound');
+import Home from './pages/Home';
+import Game from './pages/Game';
+import NotFound from './pages/NotFound';
 
 const App = () => {
 
