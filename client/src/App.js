@@ -1,12 +1,25 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import './App.css';
+import './styles/App.css';
 
-function App() {
+import Home from './pages/Home';
+import Game from './pages/Game';
+import NotFound from './pages/NotFound';
+
+const App = () => {
+
+
   return (
-    <div className="App">
-      Cent-jitsu app
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path ="/game" component={Game} />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
