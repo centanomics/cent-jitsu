@@ -14,16 +14,22 @@ const Game = () => {
     }
   }
 
+  const [players, setPlayers] = useState([]);
 
   const location = useLocation().pathname;
   let socket;
   useEffect(() => {
+    // eslint-disable-next-line 
     socket = socketIoClient(ENDPOINT);
+    const gameId = location.substring(location.lastIndexOf('/')+1)
     const data = {
-      gameId: location.substring(location.lastIndexOf('/')+1)
+      gameId: gameId
     }
     socket.emit("gameCreate", data)
-    socket.on("fullGame", () => {setRedirect(!redirect)})
+    socket.on("fullGame", () => { setRedirect(!redirect) })
+    socket.on("update", data => {
+      setPlayers(data.players.filter(player => player.gameId === gameId))
+    })
     // eslint-disable-next-line 
   }, [])
   const onClick = () => {
@@ -31,9 +37,17 @@ const Game = () => {
   }
   return (
     <div>
-      Game page
       {renderRedirect()}
-       <button onClick={onClick}>Copy link and share it!</button>
+      {players.length === 2 ?
+        <div>
+          Game Start
+        </div> :
+        <div>
+          Game page
+          
+          <button onClick={onClick}>Copy link and share it!</button>
+        </div>}
+      
     </div>
   )
 }

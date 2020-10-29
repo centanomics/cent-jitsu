@@ -18,7 +18,6 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 //game variables
-let interval;
 let game = [];
 let players = []
 
@@ -33,18 +32,28 @@ io.on("connection", (socket) => {
     socket.join(data.gameId);
     players.push({ id: socket.id, gameId: data.gameId });
 
-    if(players){}
+    if (players.filter(player => player.gameId === data.gameId).length > 2) {
+      socket.emit("fullGame")
+    }
     
   })
 
   socket.on("disconnect", () => {
     console.log(socket.id, " disconnected")
+    //removes player from players array
+    players.map((player, i) => {
+      if (player.id === socket.id) {
+        players.splice(i, 1);
+      }
+    })
 
   })
 })
 
+//live updating
 setInterval(() => {
-
+  let data = { game: game, players: players }
+  io.emit('update', data)
 }, 1);
 
 //Serve static assets in production
