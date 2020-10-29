@@ -4,7 +4,7 @@ import copy from 'copy-to-clipboard'
 import socketIoClient from 'socket.io-client'
 import {Redirect} from 'react-router-dom'
 
-const ENDPOINT = "http://127.0.0.1:5000"
+const ENDPOINT = process.env.API_URL || "http://127.0.0.1:5000"
 
 const Game = () => {
   const [redirect, setRedirect] = useState(false);
