@@ -11,8 +11,8 @@ const app = express();
 
 app.use(cors());
 
-const index = require('./routes/index');
-app.use(index);
+// const index = require('./routes/index');
+// app.use(index);
 
 const server = http.createServer(app);
 const io = socketIo(server);
