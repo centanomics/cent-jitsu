@@ -5,7 +5,7 @@ const path = require("path");
 const http = require('http');
 const socketIo = require('socket.io');
 
-const randomDeck = require('./utils/randomDeck')
+// const randomDeck = require('./utils/randomDeck')
 
 //define ports
 const PORT = process.env.PORT || 5001;
@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
       game.push(data.gameId);
     }
     socket.join(data.gameId);
-    players.push({ id: socket.id, gameId: data.gameId, deck: randomDeck() });
+    players.push({ id: socket.id, gameId: data.gameId });
 
     if (players.filter(player => player.gameId === data.gameId).length > 2) {
       socket.emit("fullGame")
