@@ -30,6 +30,11 @@ const Game = () => {
     socket.on("update", data => {
       setPlayers(data.players.filter(player => player.gameId === gameId))
     })
+    
+    return () => {
+      console.log('lmao')
+      socket.emit("disconnect");
+    }
     // eslint-disable-next-line 
   }, [])
   const onClick = () => {
