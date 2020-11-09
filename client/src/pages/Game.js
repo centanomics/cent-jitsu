@@ -32,7 +32,7 @@ const Game = () => {
     })
     
     return () => {
-      console.log('lmao')
+      console.log('lmao');
       socket.emit("disconnect");
     }
     // eslint-disable-next-line 
