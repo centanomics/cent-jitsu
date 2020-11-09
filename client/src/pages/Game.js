@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import copy from 'copy-to-clipboard'
 import socketIoClient from 'socket.io-client'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
-const ENDPOINT = process.env.API_URL || "http://127.0.0.1:5000"
+import GameBoard from '../components/GameBoard';
+
+const ENDPOINT = process.env.API_URL || "http://127.0.0.1:5000";
 
 const Game = () => {
   const [redirect, setRedirect] = useState(false);
@@ -30,11 +32,6 @@ const Game = () => {
     socket.on("update", data => {
       setPlayers(data.players.filter(player => player.gameId === gameId))
     })
-    
-    return () => {
-      console.log('lmao');
-      socket.emit("disconnect");
-    }
     // eslint-disable-next-line 
   }, [])
   const onClick = () => {
@@ -45,7 +42,7 @@ const Game = () => {
       {renderRedirect()}
       {players.length === 2 ?
         <div>
-          Game Start
+          <GameBoard />
         </div> :
         <div>
           Game page
