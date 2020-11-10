@@ -1,9 +1,16 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
-const GameBoard = () => {
+const GameBoard = ({ socket, players }) => {
+  useEffect(() => {
+    socket.emit("getPlayerId");
+    // eslint-disable-next-line 
+  }, [])
   return (
     <div>
-      GameBoard
+      <div>
+      </div>
+      <div>
+      </div>
     </div>
   )
 }
