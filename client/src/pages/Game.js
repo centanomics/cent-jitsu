@@ -42,7 +42,7 @@ const Game = () => {
       {renderRedirect()}
       {players.length === 2 ?
         <div>
-          <GameBoard socket={socket} players={players} />
+          <GameBoard players={players} />
         </div> :
         <div>
           Game page

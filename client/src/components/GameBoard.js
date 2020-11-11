@@ -1,8 +1,12 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
+import socketIoClient from 'socket.io-client'
 
-const GameBoard = ({ socket, players }) => {
+const ENDPOINT = process.env.API_URL || "http://127.0.0.1:5000";
+
+const GameBoard = ({ players }) => {
+
   useEffect(() => {
-    socket.emit("getPlayerId");
+
     // eslint-disable-next-line 
   }, [])
   return (
