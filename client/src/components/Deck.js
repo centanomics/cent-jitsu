@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Deck = () => {
+const Deck = ({playerId, deck}) => {
   return (
-    <div>
-      Deck
+    <div className="deck">
+      {playerId}
     </div>
   )
 }

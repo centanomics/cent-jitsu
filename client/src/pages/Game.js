@@ -17,24 +17,29 @@ const Game = () => {
   }
 
   const [players, setPlayers] = useState([]);
+  const [playerId, setPlayerId] = useState('');
 
   const location = useLocation().pathname;
   
   useEffect(() => {
     // eslint-disable-next-line 
     let socket = socketIoClient(ENDPOINT);
+
     const gameId = location.substring(location.lastIndexOf('/')+1)
     const data = {
       gameId: gameId
     }
     socket.emit("gameCreate", data)
+
+    socket.on('connect', () => {
+      setPlayerId(socket.id)
+    })
     socket.on("fullGame", () => { setRedirect(!redirect) })
     socket.on("update", data => {
       setPlayers(data.players.filter(player => player.gameId === gameId))
     })
 
     return () => {
-
       socket.disconnect()
     }
     // eslint-disable-next-line 
@@ -47,7 +52,7 @@ const Game = () => {
       {renderRedirect()}
       {players.length === 2 ?
         <div>
-          <GameBoard players={players} />
+          <GameBoard players={players} playerId={playerId} />
         </div> :
         <div>
           Game page
