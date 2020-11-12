@@ -19,10 +19,10 @@ const Game = () => {
   const [players, setPlayers] = useState([]);
 
   const location = useLocation().pathname;
-  let socket;
+  
   useEffect(() => {
     // eslint-disable-next-line 
-    socket = socketIoClient(ENDPOINT);
+    let socket = socketIoClient(ENDPOINT);
     const gameId = location.substring(location.lastIndexOf('/')+1)
     const data = {
       gameId: gameId
@@ -32,6 +32,11 @@ const Game = () => {
     socket.on("update", data => {
       setPlayers(data.players.filter(player => player.gameId === gameId))
     })
+
+    return () => {
+
+      socket.disconnect()
+    }
     // eslint-disable-next-line 
   }, [])
   const onClick = () => {
