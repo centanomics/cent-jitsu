@@ -1,9 +1,11 @@
-// debug not working
+const log = require('debug')('web:server')
 const cors = require('cors')
 const express = require('express');
 const path = require("path");
 const http = require('http');
 const socketIo = require('socket.io');
+
+const randomDeck = require('./utils/randomDeck')
 
 //define ports
 const PORT = process.env.PORT || 5000;
@@ -22,10 +24,10 @@ const io = socketIo(server);
 
 //game variables
 let game = [];
-let players = []
+let players = [];
 
 io.on("connection", (socket) => {
-  console.log(socket.id, " connected")
+  log(socket.id, " connected")
 
   // add game room to games (if not there already) and join room
   socket.on("gameCreate", data => {
@@ -33,7 +35,7 @@ io.on("connection", (socket) => {
       game.push(data.gameId);
     }
     socket.join(data.gameId);
-    players.push({ id: socket.id, gameId: data.gameId });
+    players.push({ id: socket.id, gameId: data.gameId, deck: randomDeck() });
 
     if (players.filter(player => player.gameId === data.gameId).length > 2) {
       socket.emit("fullGame")
@@ -42,7 +44,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("disconnect", () => {
-    console.log(socket.id, " disconnected")
+    log(socket.id, " disconnected")
     //removes player from players array
     players.map((player, i) => {
       if (player.id === socket.id) {
@@ -69,5 +71,5 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-server.listen(PORT, () => console.log(`I'm listening on port ${PORT}`))
+server.listen(PORT, () => log(`I'm listening on port ${PORT}`))
 
