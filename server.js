@@ -39,6 +39,7 @@ io.on("connection", (socket) => {
 
     if (players.filter(player => player.gameId === data.gameId).length > 2) {
       socket.emit("fullGame")
+      console.log('full gamex')
     }
     
   })
