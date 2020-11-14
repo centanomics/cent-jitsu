@@ -29,38 +29,45 @@ let players = [];
 io.on("connection", (socket) => {
   log(socket.id, " connected")
 
+  client.on('subscribeToTimer', (interval) => {
+    console.log('client is subscribing to timer with interval ', interval);
+    setInterval(() => {
+      client.emit('timer', new Date());
+    }, interval);
+  });
+
   // add game room to games (if not there already) and join room
-  socket.on("gameCreate", data => {
-    if (game.findIndex((gameId) => gameId === data.gameId) === -1) {
-      game.push(data.gameId);
-    }
-    socket.join(data.gameId);
-    players.push({ id: socket.id, gameId: data.gameId, deck: randomDeck() });
+  // socket.on("gameCreate", data => {
+  //   if (game.findIndex((gameId) => gameId === data.gameId) === -1) {
+  //     game.push(data.gameId);
+  //   }
+  //   socket.join(data.gameId);
+  //   players.push({ id: socket.id, gameId: data.gameId, deck: randomDeck() });
 
-    if (players.filter(player => player.gameId === data.gameId).length > 2) {
-      socket.emit("fullGame")
-      console.log('full gamex')
-    }
+  //   if (players.filter(player => player.gameId === data.gameId).length > 2) {
+  //     socket.emit("fullGame")
+  //     console.log('full gamex')
+  //   }
     
-  })
+  // })
 
-  socket.on("disconnect", () => {
-    log(socket.id, " disconnected")
-    //removes player from players array
-    players.map((player, i) => {
-      if (player.id === socket.id) {
-        players.splice(i, 1);
-      }
-    })
+  // socket.on("disconnect", () => {
+  //   log(socket.id, " disconnected")
+  //   //removes player from players array
+  //   players.map((player, i) => {
+  //     if (player.id === socket.id) {
+  //       players.splice(i, 1);
+  //     }
+  //   })
 
-  })
+  // })
 })
 
 //live updating
-setInterval(() => {
-  let data = { game: game, players: players }
-  io.emit('update', data)
-}, 1);
+// setInterval(() => {
+//   let data = { game: game, players: players }
+//   io.emit('update', data)
+// }, 1);
 
 //Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
