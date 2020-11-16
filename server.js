@@ -23,12 +23,35 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 //game variables
-let game = [];
 let players = [];
 
+// shows the user connected
 io.on("connection", (socket) => {
   log(socket.id, "connected")
 
+  // subscribes the client to a timer that updates data
+  socket.on('subscribeToTimer', (interval) => {
+    console.log('client is subscribing to timer with interval ', interval);
+    setInterval(() => {
+      socket.emit('timer', players);
+    }, interval);
+  });
+
+  // adds player to the player variable
+  socket.on('playerAdd', data => {
+    if (players.filter(player => player.gameId === data.gameId).length + 1 > 2) {
+      socket.emit('fullGame');
+    } else {
+      players.push({
+        id: socket.id,
+        gameId: data.gameId,
+        deck: randomDeck()
+      });
+    }
+    
+  })
+
+  // shows the user disconnected
   socket.on('disconnect', () => {
     log(socket.id, "disconnected")
   })

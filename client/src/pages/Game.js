@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import copy from 'copy-to-clipboard'
 import { Redirect } from 'react-router-dom'
 
-// import { subscribeToTimer } from '../utils/API';
+import { addPlayer, subscribeToTimer } from '../utils/API';
 // import GameBoard from '../components/GameBoard';
 
 const Game = () => {
@@ -16,9 +16,13 @@ const Game = () => {
 
   const [players, setPlayers] = useState([]);
 
-  const location = useLocation().pathname;
+  const location = useLocation().pathname
+  const gameId = location.substring(location.lastIndexOf('/') + 1);
   
   useEffect(() => {
+    subscribeToTimer(1000, (err, people) => setPlayers(people.filter(player => player.gameId === gameId)))
+
+    addPlayer(gameId, (player) => setRedirect(!redirect))
     // eslint-disable-next-line 
   }, [])
   const onClick = () => {
