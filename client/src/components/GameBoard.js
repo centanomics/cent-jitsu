@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Deck from './Deck';
 
+import {getPlayerId, subscribeToTimer} from '../utils/API';
+
 import '../styles/App.css'
 
-const GameBoard = ({ players, playerId }) => {
+const GameBoard = ({gameId}) => {
 
+  const [players, setPlayers] = useState([]);
+  const [playerId, setPlayerId] = useState('');
   const [people, setPeople] = useState([]);
 
   useEffect(() => {
+    getPlayerId((id) => setPlayerId(id));
+    subscribeToTimer(1000, setPlayers((null, peeps => peeps.filter(player => player.gameId === gameId))))
     const tempArr = []
     tempArr.push(players.filter(player => player.id !== playerId)[0])
     tempArr.push(players.filter(player => player.id === playerId)[0])
+    console.log(players)
     setPeople(tempArr)
     // eslint-disable-next-line 
   }, [])

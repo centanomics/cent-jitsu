@@ -4,7 +4,7 @@ import copy from 'copy-to-clipboard'
 import { Redirect } from 'react-router-dom'
 
 import { addPlayer, subscribeToTimer } from '../utils/API';
-// import GameBoard from '../components/GameBoard';
+import GameBoard from '../components/GameBoard';
 
 const Game = () => {
   const [redirect, setRedirect] = useState(false);
@@ -14,13 +14,15 @@ const Game = () => {
     }
   }
 
+  // how many players are connected to the game
+  // won't add you if there are already 2 players
   const [players, setPlayers] = useState([]);
 
   const location = useLocation().pathname
   const gameId = location.substring(location.lastIndexOf('/') + 1);
   
   useEffect(() => {
-    subscribeToTimer(1000, (err, people) => setPlayers(people.filter(player => player.gameId === gameId)))
+    subscribeToTimer(1000, (err, people) => setPlayers(people.filter(player => player.gameId === gameId).length))
 
     addPlayer(gameId, (player) => setRedirect(!redirect))
     // eslint-disable-next-line 
@@ -32,9 +34,9 @@ const Game = () => {
     <div>
       {renderRedirect()}
       {
-        players.length === 2 ?
+        players === 2 ?
           <div>
-            Gameboard
+            <GameBoard gameId={gameId} />
           </div> :
           <div>
             <p>Waiting for another player to join</p>

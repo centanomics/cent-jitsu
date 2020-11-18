@@ -31,7 +31,6 @@ io.on("connection", (socket) => {
 
   // subscribes the client to a timer that updates data
   socket.on('subscribeToTimer', (interval) => {
-    console.log('client is subscribing to timer with interval ', interval);
     setInterval(() => {
       socket.emit('timer', players);
     }, interval);
