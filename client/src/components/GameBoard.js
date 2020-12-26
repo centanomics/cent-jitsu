@@ -33,6 +33,7 @@ const GameBoard = ({gameId}) => {
   //     })}
   //   </div>
   // )
+  const [players, setPlayers] = useState([]);
   return (
     <div>Gameboard</div>
   )
