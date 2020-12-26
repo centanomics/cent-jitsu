@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import copy from 'copy-to-clipboard'
-import socketIoClient from 'socket.io-client'
 import { Redirect } from 'react-router-dom'
 
+import { addPlayer, subscribeToTimer } from '../utils/API';
 import GameBoard from '../components/GameBoard';
-
-const ENDPOINT = process.env.API_URL || "http://127.0.0.1:5000";
 
 const Game = () => {
   const [redirect, setRedirect] = useState(false);
@@ -16,32 +14,17 @@ const Game = () => {
     }
   }
 
+  // how many players are connected to the game
+  // won't add you if there are already 2 players
   const [players, setPlayers] = useState([]);
-  const [playerId, setPlayerId] = useState('');
 
-  const location = useLocation().pathname;
+  const location = useLocation().pathname
+  const gameId = location.substring(location.lastIndexOf('/') + 1);
   
   useEffect(() => {
-    // eslint-disable-next-line 
-    let socket = socketIoClient(ENDPOINT);
+    subscribeToTimer(1000, (err, people) => setPlayers(people.filter(player => player.gameId === gameId).length))
 
-    const gameId = location.substring(location.lastIndexOf('/')+1)
-    const data = {
-      gameId: gameId
-    }
-    socket.emit("gameCreate", data)
-
-    socket.on('connect', () => {
-      setPlayerId(socket.id)
-    })
-    socket.on("fullGame", () => { setRedirect(!redirect) })
-    socket.on("update", data => {
-      setPlayers(data.players.filter(player => player.gameId === gameId))
-    })
-
-    return () => {
-      socket.disconnect()
-    }
+    addPlayer(gameId, (player) => setRedirect(!redirect))
     // eslint-disable-next-line 
   }, [])
   const onClick = () => {
@@ -50,16 +33,16 @@ const Game = () => {
   return (
     <div>
       {renderRedirect()}
-      {players.length === 2 ?
-        <div>
-          <GameBoard players={players} playerId={playerId} />
-        </div> :
-        <div>
-          Game page
-          
-          <button onClick={onClick}>Copy link and share it!</button>
-        </div>}
-      
+      {
+        players === 2 ?
+          <div>
+            <GameBoard gameId={gameId} />
+          </div> :
+          <div>
+            <p>Waiting for another player to join</p>
+            <button onClick={onClick}>Copy link and share it!</button>
+          </div>
+      }
     </div>
   )
 }

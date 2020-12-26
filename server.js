@@ -23,44 +23,38 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 //game variables
-let game = [];
 let players = [];
 
+// shows the user connected
 io.on("connection", (socket) => {
-  log(socket.id, " connected")
+  log(socket.id, "connected")
 
-  // add game room to games (if not there already) and join room
-  socket.on("gameCreate", data => {
-    if (game.findIndex((gameId) => gameId === data.gameId) === -1) {
-      game.push(data.gameId);
-    }
-    socket.join(data.gameId);
-    players.push({ id: socket.id, gameId: data.gameId, deck: randomDeck() });
+  // subscribes the client to a timer that updates data
+  socket.on('subscribeToTimer', (interval) => {
+    setInterval(() => {
+      socket.emit('timer', players);
+    }, interval);
+  });
 
-    if (players.filter(player => player.gameId === data.gameId).length > 2) {
-      socket.emit("fullGame")
-      console.log('full gamex')
+  // adds player to the player variable
+  socket.on('playerAdd', data => {
+    if (players.filter(player => player.gameId === data.gameId).length + 1 > 2) {
+      socket.emit('fullGame');
+    } else {
+      players.push({
+        id: socket.id,
+        gameId: data.gameId,
+        deck: randomDeck()
+      });
     }
     
   })
 
-  socket.on("disconnect", () => {
-    log(socket.id, " disconnected")
-    //removes player from players array
-    players.map((player, i) => {
-      if (player.id === socket.id) {
-        players.splice(i, 1);
-      }
-    })
-
+  // shows the user disconnected
+  socket.on('disconnect', () => {
+    log(socket.id, "disconnected")
   })
 })
-
-//live updating
-setInterval(() => {
-  let data = { game: game, players: players }
-  io.emit('update', data)
-}, 1);
 
 //Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
