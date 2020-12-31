@@ -50,9 +50,10 @@ io.on("connection", (socket) => {
     
   })
 
-  // shows the user disconnected
+  // shows the user disconnected and removes that player object from the array
   socket.on('disconnect', () => {
     log(socket.id, "disconnected")
+    players = players.filter((player) => player.id !== socket.id)
   })
 })
 

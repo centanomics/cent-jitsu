@@ -27,9 +27,7 @@ const Game = () => {
 
     addPlayer(gameId, (player) => setRedirect(!redirect))
 
-    getPlayerId((id) => {
-      setPlayerId(id)
-    });
+    getPlayerId((id) => setPlayerId(id));
     // eslint-disable-next-line 
   }, [])
   const onClick = () => {
