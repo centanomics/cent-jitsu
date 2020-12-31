@@ -13,8 +13,11 @@ const addPlayer = (gameId, cb) => {
   socket.on('fullGame', player => cb(player));
 }
 
-const getPlayerId = (cb) => {
-  socket.on('connect', () => cb(socket.id));
+const getPlayerId = async (cb) => {
+  // console.log(socketId)
+  await socket.on('connect', () => {
+    cb(socket.id)
+  });
 }
 
 
