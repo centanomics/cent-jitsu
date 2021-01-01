@@ -4,8 +4,8 @@ const ENDPOINT = process.env.API_URL || "http://127.0.0.1:5000";
 const socket = openSocket(ENDPOINT);
 
 const subscribeToTimer = (interval, cb) => {
-  socket.on('timer', players => cb(null, players));
   socket.emit('subscribeToTimer', interval)
+  socket.on('timer', players => cb(null, players));
 }
 
 const addPlayer = (gameId, cb) => {
@@ -13,8 +13,11 @@ const addPlayer = (gameId, cb) => {
   socket.on('fullGame', player => cb(player));
 }
 
-const getPlayerId = (cb) => {
-  socket.on('connect', () => cb(socket.id));
+const getPlayerId = async (cb) => {
+  // console.log(socketId)
+  await socket.on('connect', () => {
+    cb(socket.id)
+  });
 }
 
 

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import Deck from './Deck';
+import PropTypes from 'prop-types'
+// import Deck from './Deck';
 
-import {getPlayerId, subscribeToTimer} from '../utils/API';
+import {subscribeToTimer} from '../utils/API';
 
 import '../styles/App.css'
 
-const GameBoard = ({gameId}) => {
+const GameBoard = ({gameId, playerId}) => {
 
   // const [players, setPlayers] = useState([]);
   // const [playerId, setPlayerId] = useState('');
@@ -34,9 +35,19 @@ const GameBoard = ({gameId}) => {
   //   </div>
   // )
   const [players, setPlayers] = useState([]);
+  useEffect(() => {
+    subscribeToTimer(1000, (err, people) => setPlayers(people.filter(player => player.gameId === gameId).length))
+    console.log(players)
+    //eslint-disable-next-line
+  }, [])
   return (
     <div>Gameboard</div>
   )
+}
+
+GameBoard.propTypes = {
+  gameId: PropTypes.string.isRequired,
+  playerId: PropTypes.string.isRequired,
 }
 
 export default GameBoard
