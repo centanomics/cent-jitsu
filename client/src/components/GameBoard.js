@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 // import Deck from './Deck';
 
-import {getPlayerId, subscribeToTimer} from '../utils/API';
+import {subscribeToTimer} from '../utils/API';
 
 import '../styles/App.css'
 
@@ -36,7 +36,8 @@ const GameBoard = ({gameId, playerId}) => {
   // )
   const [players, setPlayers] = useState([]);
   useEffect(() => {
-    console.log(gameId, playerId)
+    subscribeToTimer(1000, (err, people) => setPlayers(people.filter(player => player.gameId === gameId).length))
+    console.log(players)
     //eslint-disable-next-line
   }, [])
   return (
