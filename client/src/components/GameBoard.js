@@ -36,12 +36,27 @@ const GameBoard = ({gameId, playerId}) => {
   // )
   const [players, setPlayers] = useState([]);
   useEffect(() => {
-    subscribeToTimer(1000, (err, people) => setPlayers(people.filter(player => player.gameId === gameId).length))
-    console.log(players)
+    subscribeToTimer(
+      1000,
+      (err, people) => setPlayers(
+        people
+          .filter(player => player.gameId === gameId)
+          .sort((a, b) => {
+            console.log(playerId, a.id === playerId, b.id === playerId)
+            if (a.id === playerId) {
+              return 0;
+            }
+            if (b.id === playerId) {
+              return -1
+            }
+            return 1
+          })
+      )
+    )
     //eslint-disable-next-line
   }, [])
   return (
-    <div>Gameboard</div>
+    <div onClick={() => {console.log(playerId, players[0].id)}}>Gameboard</div>
   )
 }
 
