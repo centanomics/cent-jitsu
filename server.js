@@ -44,7 +44,7 @@ io.on("connection", (socket) => {
       players.push({
         id: socket.id,
         gameId: data.gameId,
-        deck: randomDeck()
+        deck: randomDeck(),
       });
     }
     
