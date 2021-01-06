@@ -15,9 +15,9 @@ const GameBoard = ({gameId, playerId}) => {
   // useEffect(() => {
   //   getPlayerId((id) => setPlayerId(id));
   //   subscribeToTimer(1000, setPlayers((null, peeps => peeps.filter(player => player.gameId === gameId))))
-  //   const tempArr = []
-  //   tempArr.push(players.filter(player => player.id !== playerId)[0])
-  //   tempArr.push(players.filter(player => player.id === playerId)[0])
+    // const tempArr = []
+    // tempArr.push(players.filter(player => player.id !== playerId)[0])
+    // tempArr.push(players.filter(player => player.id === playerId)[0])
   //   console.log(players)
   //   setPeople(tempArr)
   //   // eslint-disable-next-line 
@@ -39,24 +39,16 @@ const GameBoard = ({gameId, playerId}) => {
     subscribeToTimer(
       1000,
       (err, people) => setPlayers(
-        people
-          .filter(player => player.gameId === gameId)
-          .sort((a, b) => {
-            console.log(playerId, a.id === playerId, b.id === playerId)
-            if (a.id === playerId) {
-              return 0;
-            }
-            if (b.id === playerId) {
-              return -1
-            }
-            return 1
-          })
-      )
+        people.filter(player => player.gameId === gameId))
     )
+    const tempArr = []
+    tempArr.push(players.filter(player => player.id !== playerId)[0])
+    tempArr.push(players.filter(player => player.id === playerId)[0])
+    setPlayers(tempArr)
     //eslint-disable-next-line
   }, [])
   return (
-    <div onClick={() => {console.log(playerId, players[0].id)}}>Gameboard</div>
+    <div onClick={() => {console.log(playerId, '\n', players[0].id)}}>Gameboard</div>
   )
 }
 
