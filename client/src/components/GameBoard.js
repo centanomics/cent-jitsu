@@ -34,19 +34,19 @@ const GameBoard = ({gameId, playerId}) => {
   //     })}
   //   </div>
   // )
-  const [players, setPlayers] = useState([]);
-  useEffect(() => {
-    subscribeToTimer(
-      1000,
-      (err, people) => setPlayers(
-        people.filter(player => player.gameId === gameId))
-    )
-    const tempArr = []
-    tempArr.push(players.filter(player => player.id !== playerId)[0])
-    tempArr.push(players.filter(player => player.id === playerId)[0])
-    setPlayers(tempArr)
-    //eslint-disable-next-line
-  }, [])
+  // const [players, setPlayers] = useState([]);
+  // useEffect(() => {
+  //   subscribeToTimer(
+  //     1000,
+  //     (err, people) => setPlayers(
+  //       people.filter(player => player.gameId === gameId))
+  //   )
+  //   const tempArr = []
+  //   tempArr.push(players.filter(player => player.id !== playerId)[0])
+  //   tempArr.push(players.filter(player => player.id === playerId)[0])
+  //   setPlayers(tempArr)
+  //   //eslint-disable-next-line
+  // }, [])
   return (
     <div onClick={() => {console.log(playerId, '\n', players[0].id)}}>Gameboard</div>
   )
