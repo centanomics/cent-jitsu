@@ -13,12 +13,12 @@ const addPlayer = (gameId, cb) => {
   socket.on('fullGame', player => cb(player));
 }
 
-const getPlayerId = async (cb) => {
-  // console.log(socketId)
-  await socket.on('connect', () => {
-    cb(socket.id)
-  });
-}
+// const getPlayerId = async (cb) => {
+//   // console.log(socketId)
+//   await socket.on('connect', () => {
+//     cb(socket.id)
+//   });
+// }
 
 
 export { subscribeToTimer, addPlayer, getPlayerId }
